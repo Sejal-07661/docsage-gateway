@@ -10,10 +10,10 @@ const app = express();
 connectDB();
 
 app.use(express.json());
+app.use(express.static("public"));
 app.use("/auth", authRoutes);
 app.use("/documents", documentRoutes);
 app.use("/chat", chatRoutes);
-app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("DocSage Gateway is alive!");
