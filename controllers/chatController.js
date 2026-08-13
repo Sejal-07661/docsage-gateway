@@ -1,5 +1,5 @@
 const retrieveRelevantChunks = require("../services/retriever");
-const generateAnswer = require("../services/answerGenerator");
+const generateAnswerStream = require("../services/answerGenerator");
 const Conversation = require("../models/Conversation");
 
 async function askQuestion(req, res) {
@@ -21,10 +21,7 @@ async function askQuestion(req, res) {
     }
 
     const relevantChunks = await retrieveRelevantChunks(question, req.user.id);
-
     const recentHistory = conversation.messages.slice(-6);
-
-    const answer = await generateAnswer(question, relevantChunks, recentHistory);
 
     const sources = relevantChunks.map((chunk) => ({
       documentId: chunk.documentId,
@@ -32,17 +29,28 @@ async function askQuestion(req, res) {
       similarityScore: chunk.score,
     }));
 
+    // --- SSE setup ---
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders();
+
+    // Send conversationId + sources immediately, before the answer starts streaming
+    res.write(`event: meta\ndata: ${JSON.stringify({ conversationId: conversation._id, sources })}\n\n`);
+
+    const fullAnswer = await generateAnswerStream(question, relevantChunks, recentHistory, (token) => {
+      res.write(`event: token\ndata: ${JSON.stringify({ token })}\n\n`);
+    });
+
     conversation.messages.push({ role: "user", content: question });
-    conversation.messages.push({ role: "assistant", content: answer, sources });
+    conversation.messages.push({ role: "assistant", content: fullAnswer, sources });
     await conversation.save();
 
-    res.status(200).json({
-      conversationId: conversation._id,
-      answer,
-      sources,
-    });
+    res.write(`event: done\ndata: {}\n\n`);
+    res.end();
   } catch (err) {
-    res.status(500).json({ message: "Something went wrong", error: err.message });
+    res.write(`event: error\ndata: ${JSON.stringify({ message: err.message })}\n\n`);
+    res.end();
   }
 }
 
