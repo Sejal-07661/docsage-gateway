@@ -10,14 +10,18 @@ const app = express();
 connectDB();
 
 app.use(express.json());
-app.use(express.static("public"));
-app.use("/auth", authRoutes);
-app.use("/documents", documentRoutes);
-app.use("/chat", chatRoutes);
+
+// Old vanilla frontend — no longer needed now that React (Vite) handles the UI.
+// We'll bring back static serving later, pointed at client/dist, for production.
+// app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("DocSage Gateway is alive!");
 });
+
+app.use("/auth", authRoutes);
+app.use("/documents", documentRoutes);
+app.use("/chat", chatRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

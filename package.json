@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "dev": "nodemon app.js",
-  "start": "node app.js",
-  "test": "jest"
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,8 @@
     "mongoose": "^9.7.4",
     "multer": "^2.2.0",
     "pdf-parse": "^1.1.1",
-    "rate-limiter-flexible": "^11.2.0"
+    "rate-limiter-flexible": "^11.2.0",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "jest": "^30.4.2",
