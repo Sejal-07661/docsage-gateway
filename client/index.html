@@ -1,88 +1,13 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docsage</title>
+  </head>
 
-body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: #0f1117;
-  color: #e4e6eb;
-  min-height: 100vh;
-}
-
-.auth-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-
-.auth-card {
-  background: #1a1d29;
-  border: 1px solid #2a2e3f;
-  border-radius: 12px;
-  padding: 40px;
-  width: 100%;
-  max-width: 380px;
-}
-
-.auth-card h1 {
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.auth-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.auth-card input {
-  background: #0f1117;
-  border: 1px solid #2a2e3f;
-  border-radius: 8px;
-  padding: 12px 14px;
-  color: #e4e6eb;
-  font-size: 0.95rem;
-}
-
-.auth-card input:focus {
-  outline: none;
-  border-color: #6366f1;
-}
-
-.auth-card button {
-  background: #6366f1;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-.auth-card button:hover {
-  background: #5457d1;
-}
-
-.auth-card p {
-  text-align: center;
-  margin-top: 18px;
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-.auth-card a {
-  color: #818cf8;
-}
-
-.error-text {
-  color: #f87171;
-  font-size: 0.85rem;
-  text-align: center;
-}
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
