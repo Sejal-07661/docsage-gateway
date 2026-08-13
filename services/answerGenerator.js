@@ -2,7 +2,7 @@ const Groq = require("groq-sdk");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-async function generateAnswer(question, relevantChunks, conversationHistory = []) {
+async function generateAnswerStream(question, relevantChunks, conversationHistory = [], onChunk) {
   const context = relevantChunks
     .map((chunk, i) => `[Source ${i + 1}]: ${chunk.text}`)
     .join("\n\n");
@@ -18,13 +18,24 @@ ${context}`;
     { role: "user", content: question },
   ];
 
-  const completion = await groq.chat.completions.create({
+  const stream = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages,
     temperature: 0.2,
+    stream: true,
   });
 
-  return completion.choices[0].message.content;
+  let fullAnswer = "";
+
+  for await (const part of stream) {
+    const token = part.choices[0]?.delta?.content || "";
+    if (token) {
+      fullAnswer += token;
+      onChunk(token);
+    }
+  }
+
+  return fullAnswer;
 }
 
-module.exports = generateAnswer;
+module.exports = generateAnswerStream;
