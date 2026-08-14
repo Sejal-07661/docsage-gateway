@@ -2,10 +2,15 @@ const Chunk = require("../models/Chunk");
 const generateEmbedding = require("./embedder");
 const cosineSimilarity = require("./similarity");
 
-async function retrieveRelevantChunks(question, ownerId, topK = 3) {
+async function retrieveRelevantChunks(question, ownerId, documentIds = [], topK = 3) {
   const questionEmbedding = await generateEmbedding(question);
 
-  const allChunks = await Chunk.find({ owner: ownerId });
+  const query = { owner: ownerId };
+  if (documentIds.length > 0) {
+    query.document = { $in: documentIds };
+  }
+
+  const allChunks = await Chunk.find(query);
 
   const scoredChunks = allChunks.map((chunk) => ({
     text: chunk.text,
