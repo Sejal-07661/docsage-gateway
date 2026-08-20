@@ -8,17 +8,17 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/auth", authRoutes);
-app.use("/documents", documentRoutes);
-app.use("/chat", chatRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/documents", documentRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Serve the built React frontend in production
 app.use(express.static(path.join(__dirname, "client/dist")));
 
 // Any route not matched above (and not an API route) falls through to
 // React's index.html, so client-side routing (React Router) works on refresh
-app.get(/^(?!\/(auth|documents|chat)).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+app.get(/^(?!\/api\/).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "client/dist", "index.html"));
 });
 
 module.exports = app;
