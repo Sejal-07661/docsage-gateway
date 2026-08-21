@@ -1,5 +1,7 @@
 # DocSage — AI Document Intelligence Platform
 
+![Tests](https://github.com/Sejal-07661/docsage-gateway/actions/workflows/test.yml/badge.svg)
+
 DocSage is a full-stack, event-driven RAG (Retrieval-Augmented Generation) application that lets you upload documents and have a real-time, streaming conversation with an AI assistant grounded in their content — complete with clickable source citations and multi-document scoped search.
 
 Built as an original portfolio project to demonstrate backend systems design, applied AI/RAG engineering, and full-stack product thinking.
