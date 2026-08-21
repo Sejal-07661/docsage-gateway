@@ -28,9 +28,9 @@ afterAll(async () => {
   await closeTestDB();
 });
 
-describe("POST /auth/signup", () => {
+describe("POST /api/auth/signup", () => {
   test("creates a new user successfully", async () => {
-    const res = await request(app).post("/auth/signup").send({
+    const res = await request(app).post("/api/auth/signup").send({
       name: "Test User",
       email: "test@example.com",
       password: "password123",
@@ -46,14 +46,14 @@ describe("POST /auth/signup", () => {
 
   test("rejects signup with an already-registered email", async () => {
     // First signup should succeed
-    await request(app).post("/auth/signup").send({
+    await request(app).post("/api/auth/signup").send({
       name: "First User",
       email: "duplicate@example.com",
       password: "password123",
     });
 
     // Second signup with the same email should fail
-    const res = await request(app).post("/auth/signup").send({
+    const res = await request(app).post("/api/auth/signup").send({
       name: "Second User",
       email: "duplicate@example.com",
       password: "differentpassword",
@@ -64,10 +64,10 @@ describe("POST /auth/signup", () => {
   });
 });
 
-describe("POST /auth/login", () => {
+describe("POST /api/auth/login", () => {
   beforeEach(async () => {
     // Create a known user before each login test
-    await request(app).post("/auth/signup").send({
+    await request(app).post("/api/auth/signup").send({
       name: "Login Test User",
       email: "login@example.com",
       password: "correctpassword",
@@ -75,7 +75,7 @@ describe("POST /auth/login", () => {
   });
 
   test("logs in successfully with correct credentials", async () => {
-    const res = await request(app).post("/auth/login").send({
+    const res = await request(app).post("/api/auth/login").send({
       email: "login@example.com",
       password: "correctpassword",
     });
@@ -88,7 +88,7 @@ describe("POST /auth/login", () => {
   });
 
   test("rejects login with incorrect password", async () => {
-    const res = await request(app).post("/auth/login").send({
+    const res = await request(app).post("/api/auth/login").send({
       email: "login@example.com",
       password: "wrongpassword",
     });
@@ -99,7 +99,7 @@ describe("POST /auth/login", () => {
   });
 
   test("rejects login for a non-existent email", async () => {
-    const res = await request(app).post("/auth/login").send({
+    const res = await request(app).post("/api/auth/login").send({
       email: "doesnotexist@example.com",
       password: "anypassword",
     });
